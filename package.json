@@ -1,0 +1,27 @@
+{
+  "name": "ggenerator-engine",
+  "version": "1.0.0",
+  "description": "engine of gg",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aceunlonely/ggenerator-engine.git"
+  },
+  "author": "apporoad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aceunlonely/ggenerator-engine/issues"
+  },
+  "homepage": "https://github.com/aceunlonely/ggenerator-engine#readme",
+  "dependencies": {
+    "ggenerator-compress": "^1.0.0",
+    "ggenerator-fom": "^1.0.0",
+    "ggenerator-template-engine": "^1.0.0",
+    "ggenerator-utils": "^1.0.0",
+    "peeriocjs": "^2.2.0",
+    "xml2js": "^0.4.19"
+  }
+}
