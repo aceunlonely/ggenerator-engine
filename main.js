@@ -7,6 +7,11 @@ var fom= require('ggenerator-fom')
 var config=require('peeriocjs').invoke("config").sync.config() //require('../config')
 var xml2js = require('xml2js');
 
+var ioc=require('peeriocjs').module("gg-engine")
+
+ioc.reg("preMainExecuting",function(env){},null,true)
+ioc.reg("afterMainExecuting",function(env){},null,true)
+
 var builder = new xml2js.Builder();  // JSON->xml
 var parser =  new xml2js.Parser({explicitArray : false, ignoreAttrs : true , async: false}); 
 
@@ -187,6 +192,15 @@ exports.run =function (params,callback) {
     }
     if(!fs.existsSync(absoluteTpPath)){ throw new Error("gg does not have the templatePackage : " + tpName )}
 
+    // when  dDataSrcPath is null,and is ComboTemplate  ddata use TTData
+    //console.log(path.join(absoluteTpPath,"TDData"))
+    if(!dDataSrcPath && fs.existsSync(path.join(absoluteTpPath,"TDData")))
+        dDataSrcPath = path.join(absoluteTpPath,"TDData")
+    //dDataSrcPath check
+    if(!fs.existsSync(dDataSrcPath)){
+        throw new Error("you must give a right ddata path : " + dDataSrcPath )
+    }
+
     //0. create folder of workplace
     var wp = config.workplaceDefaultPath
     if(workplace)
@@ -215,7 +229,7 @@ exports.run =function (params,callback) {
 
              refPath: path.join(absoluteTpPath,'TemplateFiles'),    //引用路径
              extPath: path.join(absoluteTpPath,'Ext'),    //扩展包位置
-             dynamicPath: path.join(dDataPath,'FileCollection'),                       //动态引用路径
+             dynamicPath: path.join(dDataPath,'FileCollection'),       //动态引用路径
              workspace: tempPath                                               //工作路径
 
             }
@@ -247,14 +261,20 @@ exports.run =function (params,callback) {
             }
         };
 
+    var iocMainExcutor = function(){
+        ioc.invoke("preMainExecuting").preMainExecuting(env).then(mainExcutor).then(function(){
+            ioc.invoke("afterMainExecuting").afterMainExecuting(env)
+        })
+    }
+
     if(gu.isDirectory(dDataSrcPath))
     {
-        gu.copyDir(dDataSrcPath,env.dynamicRootPath,mainExcutor)
+        gu.copyDir(dDataSrcPath,env.dynamicRootPath,iocMainExcutor)
     }
     else
     {
         //1. unpack dData package
-        compress.unzip(dDataSrcPath,env.dynamicRootPath,mainExcutor)
+        compress.unzip(dDataSrcPath,env.dynamicRootPath,iocMainExcutor)
     }
     
 }
