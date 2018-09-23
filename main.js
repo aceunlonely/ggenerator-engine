@@ -301,6 +301,12 @@ exports.run =function (params,callback) {
                 fs.copyFile(dDataSrcPath,path.join(env.dynamicRootPath,"DataObject/index.js"),iocMainExcutor)
             })
         }
+        else if(endWith(dDataSrcPath,'.json')){
+            //ddata is a json file
+            gu.copyDir(__dirname + "/sundry/emptyDData",env.dynamicRootPath,function(){
+                fs.copyFile(dDataSrcPath,path.join(env.dynamicRootPath,"DataObject/index.json"),iocMainExcutor)
+            })
+        }
         else
         {
             throw Error("GG-engine: ddata is not right formatted : " + dDataSrcPath)
