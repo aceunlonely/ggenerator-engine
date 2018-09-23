@@ -234,6 +234,12 @@ exports.run =function (params,callback) {
              workspace: tempPath                                               //工作路径
 
             }
+    if(config.verbose){
+        console.log("\t[info]templatePackagePath(模板包路径) : "+ absoluteTpPath)
+        console.log("\t[info]ddataSourcePath(动态数据源路径) : " + dDataSrcPath)
+        console.log("\t[info]workspace(工作空间路径) : " + tempPath)
+        console.log("\t[info]targetPath(目标路径) : " + tgtPath)
+    }
             
     //main logic
     var mainExcutor=function() {
