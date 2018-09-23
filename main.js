@@ -23,6 +23,7 @@ var getTd=function(env){
     var tempTConfig = require( path.join( env.templatePackageRootPath ,'Config'))
     var tempDConfig = require(env.dynamicRootPath + '/Config')
     var tempDData = require(env.dynamicRootPath + '/DataObject')
+    if(JSON.stringify(tempDData) == "{}"){ console.log("gg-engine: find ddataObject is {} ,pliz take care");}
     return {
         data : null,
         tConfig :tempTConfig,
@@ -239,6 +240,10 @@ exports.run =function (params,callback) {
             //debugger;
             //2. read dData json
             var dDataJson = getTd(env)
+            if(isDebug){
+                console.log("dataJson+++++++++++++++++++++++++++++++++++++++")
+                console.log(dDataJson)
+            }
             //3. create real workspace
             gu.copyDir(path.join(env.templatePackageRootPath,'Workspace'),env.workspace)
             //3.5 load ext methods to tempEngine
@@ -269,12 +274,38 @@ exports.run =function (params,callback) {
 
     if(gu.isDirectory(dDataSrcPath))
     {
-        gu.copyDir(dDataSrcPath,env.dynamicRootPath,iocMainExcutor)
+        // is DataObject or DData
+        if(fs.existsSync(path.join(dDataSrcPath,"DataObject")))
+        {
+            // here is ddata
+            gu.copyDir(dDataSrcPath,env.dynamicRootPath,iocMainExcutor)
+        }
+        else{
+            //here is dataobject
+            gu.copyDir(__dirname + "/sundry/emptyDData",env.dynamicRootPath,function(){
+                gu.delDir(path.join(env.dynamicRootPath,"DataObject"))
+                gu.copyDir(dDataSrcPath,path.join(env.dynamicRootPath,"DataObject"), iocMainExcutor)
+            })
+        }
     }
     else
     {
-        //1. unpack dData package
-        compress.unzip(dDataSrcPath,env.dynamicRootPath,iocMainExcutor)
+        //is endwith .js
+        if(endWith(dDataSrcPath,'.zip')){
+            //1. unpack dData package
+            compress.unzip(dDataSrcPath,env.dynamicRootPath,iocMainExcutor)
+        }
+        else if(endWith(dDataSrcPath,'.js')){
+            //ddata is a js file
+            gu.copyDir(__dirname + "/sundry/emptyDData",env.dynamicRootPath,function(){
+                fs.copyFile(dDataSrcPath,path.join(env.dynamicRootPath,"DataObject/index.js"),iocMainExcutor)
+            })
+        }
+        else
+        {
+            throw Error("GG-engine: ddata is not right formatted : " + dDataSrcPath)
+        }
+        
     }
     
 }
