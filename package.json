@@ -19,7 +19,7 @@
   "dependencies": {
     "ggenerator-compress": "^1.0.0",
     "ggenerator-fom": "^1.0.0",
-    "ggenerator-template-engine": "^1.0.0",
+    "ggenerator-template-engine": "^1.1.0",
     "ggenerator-utils": "^1.0.0",
     "peeriocjs": "^2.2.0",
     "xml2js": "^0.4.19"

@@ -16,6 +16,26 @@ var builder = new xml2js.Builder();  // JSON->xml
 var parser =  new xml2js.Parser({explicitArray : false, ignoreAttrs : true , async: false}); 
 
 
+/**
+ *  fom is in ignore 
+ * @param {string} fom 
+ * @param {*} dDataJson 
+ */
+var fomIsInIgnore = function(fom, dDataJson){
+    if(dDataJson.tc && dDataJson.tc.fom && dDataJson.tc.fom.ignore){
+        return in_array(fom,dDataJson.tc.fom.ignore)
+    }
+    return false;
+}
+function in_array(stringToSearch, arrayToSearch) {
+    for (s = 0; s < arrayToSearch.length; s++) {
+     thisEntry = arrayToSearch[s].toString();
+     if (thisEntry == stringToSearch) {
+      return true;
+     }
+    }
+    return false;
+}
 //compress.unzip('d:/test/test.zip','d:/test/test2')
 
 //get template object
@@ -87,7 +107,7 @@ var execFomRecurring = function(env,templateEngine,renderJson){
                 else
                 {
                     //find a fom
-                    if(endWith(fileName,'.fom'))
+                    if(endWith(fileName,'.fom') && !fomIsInIgnore(fileName))
                     {
                         var fomXml = fs.readFileSync( path.join(env.workspace,fileName),"utf-8")
                         //渲染 TE render fom and parse fom
