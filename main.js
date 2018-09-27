@@ -107,7 +107,7 @@ var execFomRecurring = function(env,templateEngine,renderJson){
                 else
                 {
                     //find a fom
-                    if(endWith(fileName,'.fom') && !fomIsInIgnore(fileName))
+                    if(endWith(fileName,'.fom') && !fomIsInIgnore(fileName,renderJson))
                     {
                         var fomXml = fs.readFileSync( path.join(env.workspace,fileName),"utf-8")
                         //渲染 TE render fom and parse fom
