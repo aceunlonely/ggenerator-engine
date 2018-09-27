@@ -159,7 +159,16 @@ var execRenderRecurring = function(workspace,tgt,templateEngine,renderJson){
             }
             else
             {
-                templateEngine.renderFile(workspace +'/' + file,tgt + '/' + file,renderJson,true)
+                try{
+                    templateEngine.renderFile(workspace +'/' + file,tgt + '/' + file,renderJson,true)
+                }
+                catch(ex)
+                {
+                    console.log("gg-engine:renderFileFailed :"  )
+                    console.log("\tfile :" + file   )
+                    console.log("\trenderJson:" + renderJson   )
+                    throw ex;
+                }
             }
         })
     }
