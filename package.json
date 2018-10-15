@@ -1,6 +1,6 @@
 {
   "name": "ggenerator-engine",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "engine of gg",
   "main": "main.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "ggenerator-fom": "^1.0.0",
     "ggenerator-template-engine": "^1.1.0",
     "ggenerator-utils": "^1.0.0",
-    "peeriocjs": "^2.2.0",
+    "peeriocjs": "^2.4.1",
     "xml2js": "^0.4.19"
   }
 }

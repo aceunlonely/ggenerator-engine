@@ -185,8 +185,8 @@ var execRenderRecurring = function(workspace,tgt,templateEngine,renderJson){
                 catch(ex)
                 {
                     console.log("gg-engine:renderFileFailed :"  )
-                    console.log("\tfile :" + file   )
-                    console.log("\trenderJson:" + renderJson   )
+                    console.log("\tfile :" + workspace + '/' + file   )
+                    console.log("\trenderJson:" + JSON.stringify(renderJson))
                     throw ex;
                 }
             }
